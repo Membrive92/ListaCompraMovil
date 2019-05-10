@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Jose Antonio Membrive">
+    <meta name="keywords" content="SQlite, Cliente, Servidor, ListaCompra">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Song+Myung" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee:400,400i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="font/fontawesome-free-5.6.3-web/css/all.css">
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <title>Lista de la Compra </title>
+
+
+
+</head>
+<body >
+<div class="parallax">
+
+    <nav class="barra-navegacion navbar justify-content-start fixed-top align-items-center ">
+
+        <div class="desplegable dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconodesplegable fas fa-bars"></i>
+            </button>
+            <div class="fondo_menu dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item"  onclick="SeleccionarTodosMarcado()"><i class="icono fas fa-check"></i>Marcar Todos </a>
+                <a class="dropdown-item"  onclick="SeleccionarTodosDesmarcado()"> <i class="icono fas fa-minus-circle"></i>Desmarcar Todos </a>
+                <a class="dropdown-item"  data-toggle="modal" data-target="#exampleModalCenter"><i class="icono far fa-times-circle"></i>Vaciar lista </i></a>
+            </div>
+        </div>
+        <h5>Lista de la Compra</h5>
+    </nav>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="titulo_modal modal-header">
+                    <h5 class=" modal-title" id="exampleModalLongTitle">Vaciar Lista</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="contenido_modal modal-body">
+                    ¿Estas seguro de que quieres Vaciar tu lista de la compra?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="boton_guardar btn " data-dismiss="modal">Volver a la lista de la compra</button>
+                    <button type="button" class="boton_guardar btn " data-dismiss="modal" onclick="VaciarLista()">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModaladd" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="titulo_modal modal-header">
+                    <h5 class=" modal-title" id="exampleModaltitle">Añadir Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="contenido_modal modal-body">
+
+                    <input type="text"   class=" campo_texto" id="nombre"  name="nombre"  placeholder="Producto" autofocus/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="boton_guardar btn " data-dismiss="modal">Cancelar</button>
+                    <button type="button" id="add" class="boton_guardar btn "  onclick="addNombre1()">Añadir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModalupdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="titulo_modal modal-header">
+                    <h5 class=" modal-title" id="exampleModaltittle">Actualizar Campo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="contenido_modal modal-body">
+
+                    <input type="text"   class=" campo_texto" id="update"  name="nombre"  placeholder="Producto" autofocus/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="boton_guardar btn " data-dismiss="modal">Cancelar</button>
+                    <button type="button" id="updadate" class="boton_guardar btn "  onclick="ActualizarNombre()">Actualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <main>
+        <img class="flotante rounded-circle " data-toggle="modal" data-target="#exampleModaladd" onclick="focalizar()"  src="./imagenes/b22comprar.PNG" alt="boton">
+
+
+      <!--<div class="row rounded fixed-bottom">
+        <button  class="boton_guardar col-sm-12 btn btn-success"  id="añadir" value="Guardar" onclick="addNombre1()">Guardar</button>
+        <button class="boton_guardar col-sm-12 btn btn-success"  id="actualizar" value="actualizar" onclick="ActualizarNombre()">Actualizar</button>
+        <input type="text"   class=" campo_texto" id="nombre" autofocus name="nombre"  placeholder="Producto" />
+      </div>-->
+
+
+        <input type="text" id="filtro" placeholder="Producto a buscar en la lista" autofocus>
+      <div class=" contenedor-items d-flex align-items-center justify-content-center  ">
+    <ul id="todoItems">
+    </ul>
+      </div>
+    </main>
+
+
+
+
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="GianlucaGuarini-Tocca.js-47ac0e0/Tocca.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/scripts.js"></script>
+</div>
+</body>
+</html>
